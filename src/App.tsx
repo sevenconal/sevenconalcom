@@ -7,6 +7,7 @@ import { Services } from './components/Services';
 import { Contact } from './components/Contact';
 import { Footer } from './components/Footer';
 import { CommandPalette } from './components/CommandPalette';
+import { WhatsAppButton } from './components/WhatsAppButton';
 
 export function App() {
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
@@ -24,6 +25,9 @@ export function App() {
         <Services />
         <Contact />
       </main>
+
+      {/* Floating Bottom-Left WhatsApp Action */}
+      <WhatsAppButton />
 
       {/* Footer */}
       <Footer />
