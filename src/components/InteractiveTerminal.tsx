@@ -1,26 +1,33 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Terminal as TerminalIcon, Play, Sparkles, CheckCircle2 } from 'lucide-react';
 import { PROFILE_DATA } from '../data/profile';
+import { useLanguage } from '../context/LanguageContext';
 
 export const InteractiveTerminal: React.FC = () => {
+  const { lang, t } = useLanguage();
   const [activeTab, setActiveTab] = useState<'bio' | 'stack' | 'cli'>('bio');
   const [inputVal, setInputVal] = useState('');
-  const [history, setHistory] = useState<Array<{ command: string; output: string | React.ReactNode }>>([
-    {
-      command: 'systeminfo --user "Sevenç Önal"',
-      output: (
-        <div className="space-y-1 text-slate-300 text-xs">
-          <p className="text-emerald-400 font-semibold">✓ Developer Profile Loaded Successfully</p>
-          <p>• <span className="text-slate-400">Role:</span> Bilgisayar Mühendisliği Öğrencisi & Developer</p>
-          <p>• <span className="text-slate-400">Focus:</span> Web & Mobil Uygulamalar, Yazılım Mimarisi</p>
-          <p>• <span className="text-slate-400">Mindset:</span> Problem Odaklı • Uçtan Uca Tasarım & Kodlama</p>
-          <p className="text-slate-500 pt-1">İpucu: Komut satırına <span className="text-emerald-400">help</span> yazabilir veya aşağıdaki hızlı butonlara tıklayabilirsiniz.</p>
-        </div>
-      ),
-    },
-  ]);
+  const [history, setHistory] = useState<Array<{ command: string; output: string | React.ReactNode }>>([]);
 
   const terminalEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Reset initial history based on active language
+    setHistory([
+      {
+        command: 'systeminfo --user "Sevenç Önal"',
+        output: (
+          <div className="space-y-1 text-slate-300 text-xs">
+            <p className="text-emerald-400 font-semibold">✓ {t.hero.terminalLoaded}</p>
+            <p>• <span className="text-slate-400">{t.hero.terminalRole}:</span> {t.hero.terminalRoleVal}</p>
+            <p>• <span className="text-slate-400">{t.hero.terminalFocus}:</span> {t.hero.terminalFocusVal}</p>
+            <p>• <span className="text-slate-400">{t.hero.terminalMindset}:</span> {t.hero.terminalMindsetVal}</p>
+            <p className="text-slate-500 pt-1">{t.hero.terminalRunHelp}</p>
+          </div>
+        ),
+      },
+    ]);
+  }, [lang]);
 
   useEffect(() => {
     terminalEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -36,12 +43,12 @@ export const InteractiveTerminal: React.FC = () => {
       case 'help':
         response = (
           <div className="text-xs space-y-1 text-slate-300">
-            <p className="text-teal-400 font-semibold">Kullanılabilir Komutlar:</p>
-            <p><span className="text-emerald-400 font-mono w-24 inline-block">bio</span> — Hakkımda & Mühendislik Vizyonu</p>
-            <p><span className="text-emerald-400 font-mono w-24 inline-block">stack</span> — Kullandığım Diller & Teknolojiler</p>
-            <p><span className="text-emerald-400 font-mono w-24 inline-block">projects</span> — Öne Çıkan Gerçek Projeler</p>
-            <p><span className="text-emerald-400 font-mono w-24 inline-block">contact</span> — İletişim & Sosyal Medya Bağlantıları</p>
-            <p><span className="text-emerald-400 font-mono w-24 inline-block">clear</span> — Ekranı Temizler</p>
+            <p className="text-teal-400 font-semibold">{lang === 'tr' ? 'Kullanılabilir Komutlar:' : 'Available Commands:'}</p>
+            <p><span className="text-emerald-400 font-mono w-24 inline-block">bio</span> — {lang === 'tr' ? 'Hakkımda & Mühendislik Vizyonu' : 'About & Engineering Vision'}</p>
+            <p><span className="text-emerald-400 font-mono w-24 inline-block">stack</span> — {lang === 'tr' ? 'Kullandığım Diller & Teknolojiler' : 'Programming Languages & Tech Stack'}</p>
+            <p><span className="text-emerald-400 font-mono w-24 inline-block">projects</span> — {lang === 'tr' ? 'Öne Çıkan Gerçek Projeler' : 'Featured Real Projects'}</p>
+            <p><span className="text-emerald-400 font-mono w-24 inline-block">contact</span> — {lang === 'tr' ? 'İletişim & Sosyal Medya Bağlantıları' : 'Contact & Social Profiles'}</p>
+            <p><span className="text-emerald-400 font-mono w-24 inline-block">clear</span> — {lang === 'tr' ? 'Ekranı Temizler' : 'Clears the console screen'}</p>
           </div>
         );
         break;
@@ -49,8 +56,8 @@ export const InteractiveTerminal: React.FC = () => {
       case 'about':
         response = (
           <div className="text-xs space-y-1 text-slate-300">
-            <p className="text-emerald-400 font-semibold">Sevenç Önal — Geliştirici Profili</p>
-            <p>{PROFILE_DATA.shortBio}</p>
+            <p className="text-emerald-400 font-semibold">{PROFILE_DATA.name} — {lang === 'tr' ? 'Geliştirici Profili' : 'Developer Profile'}</p>
+            <p>{lang === 'tr' ? PROFILE_DATA.shortBio : 'Computer engineering student focusing on software architecture, clean code, responsive user experiences, and pragmatic digital solutions for real-world problems.'}</p>
           </div>
         );
         break;
@@ -58,30 +65,29 @@ export const InteractiveTerminal: React.FC = () => {
       case 'skills':
         response = (
           <div className="text-xs space-y-1 text-slate-300">
-            <p className="text-emerald-400 font-semibold">Öne Çıkan Yetkinlikler:</p>
-            <p>• Programming: Python, C, C++, Dart</p>
-            <p>• Web: HTML5, CSS3, JavaScript, PHP, Laravel</p>
-            <p>• Mobile: Flutter, Dart</p>
-            <p>• Database: SQLite, SQL, SQLAlchemy</p>
-            <p>• Tools: Git, GitHub, VS Code, AI-assisted tools</p>
+            <p className="text-emerald-400 font-semibold">{lang === 'tr' ? 'Öne Çıkan Yetkinlikler:' : 'Core Competencies:'}</p>
+            <p>• Languages: Python, Dart, TypeScript, C/C++</p>
+            <p>• Web & Mobile: React, Flutter, Laravel, Tailwind CSS</p>
+            <p>• Cloud & DB: Supabase, SQLite, SQL, Pinecone</p>
+            <p>• Tooling: Git, GitHub, VS Code, Linux</p>
           </div>
         );
         break;
       case 'projects':
         response = (
           <div className="text-xs space-y-1 text-slate-300">
-            <p className="text-emerald-400 font-semibold">Gerçek Projelerim:</p>
-            <p>1. <span className="text-slate-100">QR Menü & İşletme Kataloğu</span> (Laravel, JS, SQLite)</p>
-            <p>2. <span className="text-slate-100">Kişisel Marka Web Platformu</span> (React, TypeScript, Tailwind)</p>
-            <p>3. <span className="text-slate-100">Flutter Odak & Task Mobil Uygulaması</span> (Flutter, SQLite)</p>
-            <p>4. <span className="text-slate-100">Python Otomasyon & Veri Scripti</span> (Python, SQLAlchemy)</p>
+            <p className="text-emerald-400 font-semibold">{lang === 'tr' ? 'Öne Çıkan Projeler:' : 'Featured Projects:'}</p>
+            <p>1. <span className="text-slate-100">QR Menu & Business Platform</span> (Laravel, JS, SQLite)</p>
+            <p>2. <span className="text-slate-100">Personal Brand Web Portfolio</span> (React, TypeScript, Tailwind)</p>
+            <p>3. <span className="text-slate-100">Flutter Focus & Task Mobile App</span> (Flutter, SQLite)</p>
+            <p>4. <span className="text-slate-100">Python Automation & Data Processing</span> (Python, SQLAlchemy)</p>
           </div>
         );
         break;
       case 'contact':
         response = (
           <div className="text-xs space-y-1 text-slate-300">
-            <p className="text-emerald-400 font-semibold">İletişim Kanalları:</p>
+            <p className="text-emerald-400 font-semibold">{lang === 'tr' ? 'İletişim Kanalları:' : 'Contact Channels:'}</p>
             <p>• GitHub: <a href={PROFILE_DATA.githubUrl} target="_blank" rel="noopener noreferrer" className="text-teal-400 underline">github.com/sevenconal</a></p>
             <p>• LinkedIn: <a href={PROFILE_DATA.linkedinUrl} target="_blank" rel="noopener noreferrer" className="text-teal-400 underline">sevenc-onal</a></p>
           </div>
@@ -94,7 +100,9 @@ export const InteractiveTerminal: React.FC = () => {
       default:
         response = (
           <p className="text-xs text-rose-400">
-            Komut bulunamadı: '{cmd}'. Kullanılabilir komutları görmek için <span className="text-emerald-400">help</span> yazın.
+            {lang === 'tr'
+              ? `Komut bulunamadı: '${cmd}'. Kullanılabilir komutları görmek için help yazın.`
+              : `Command not found: '${cmd}'. Type 'help' to see available commands.`}
           </p>
         );
     }
@@ -104,7 +112,7 @@ export const InteractiveTerminal: React.FC = () => {
   };
 
   return (
-    <div className="w-full rounded-2xl bg-[#0d1322] border border-slate-800 shadow-2xl overflow-hidden font-mono text-sm">
+    <div className="w-full rounded-2xl bg-[#0d1322] border border-slate-700/80 dark:border-slate-800 shadow-2xl overflow-hidden font-mono text-sm">
       {/* Terminal Header Bar */}
       <div className="bg-[#131b2e] px-4 py-3 border-b border-slate-800 flex items-center justify-between">
         <div className="flex items-center gap-2">
@@ -154,19 +162,21 @@ export const InteractiveTerminal: React.FC = () => {
           <div className="space-y-3 text-xs text-slate-300">
             <div className="flex items-center gap-2 text-emerald-400 font-semibold">
               <Sparkles className="w-4 h-4" />
-              <span>Geliştirici Felsefesi & Yaklaşımı</span>
+              <span>{lang === 'tr' ? 'Teknik Mimari & Bulut Altyapısı' : 'Technical Architecture & Cloud Stack'}</span>
             </div>
-            <p className="leading-relaxed text-slate-300 border-l-2 border-emerald-500/40 pl-3">
-              "{PROFILE_DATA.philosophy}"
+            <p className="leading-relaxed text-slate-300 border-l-2 border-emerald-500/40 pl-3 font-mono text-[11.5px]">
+              {lang === 'tr'
+                ? '"Supabase ile PostgreSQL RLS güvenliği, Clerk ile sorunsuz kimlik doğrulama, Pinecone ile vektör arama ve Sentry ile hata takibi kurarak uçtan uca modern web/mobil altyapıları inşa ediyorum."'
+                : '"Architecting resilient web/mobile backends with Supabase Postgres RLS, frictionless Clerk auth, Pinecone vector search, and Sentry proactive telemetry."'}
             </p>
             <div className="pt-2 grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px]">
               <div className="bg-slate-900/60 p-2.5 rounded-lg border border-slate-800/80">
-                <span className="text-emerald-400 font-bold block mb-0.5">Mühendislik Temeli</span>
-                <span className="text-slate-400">Algoritmalar, Veri Yapıları, İşletim Sistemleri, Veritabanları</span>
+                <span className="text-emerald-400 font-bold block mb-0.5">{lang === 'tr' ? 'Bulut & DB' : 'Cloud & Database'}</span>
+                <span className="text-slate-400">Supabase, Pinecone Vector DB, SQLite</span>
               </div>
               <div className="bg-slate-900/60 p-2.5 rounded-lg border border-slate-800/80">
-                <span className="text-teal-400 font-bold block mb-0.5">Pratik Uygulama</span>
-                <span className="text-slate-400">Web & Mobil Projeler, Veritabanı Mimarisi, Temiz Kod</span>
+                <span className="text-teal-400 font-bold block mb-0.5">{lang === 'tr' ? 'Güvenlik & İzleme' : 'Security & Monitoring'}</span>
+                <span className="text-slate-400">Clerk Auth, Sentry Error Tracking</span>
               </div>
             </div>
           </div>
@@ -178,11 +188,10 @@ export const InteractiveTerminal: React.FC = () => {
               <span className="text-purple-400">const</span> developerStack = {'{'}
             </div>
             <div className="pl-4 space-y-1 text-slate-300 text-[12px]">
-              <p><span className="text-teal-400">"languages"</span>: [<span className="text-emerald-300">"Python"</span>, <span className="text-emerald-300">"C"</span>, <span className="text-emerald-300">"C++"</span>, <span className="text-emerald-300">"Dart"</span>],</p>
-              <p><span className="text-teal-400">"web"</span>: [<span className="text-emerald-300">"HTML5"</span>, <span className="text-emerald-300">"CSS3"</span>, <span className="text-emerald-300">"JavaScript"</span>, <span className="text-emerald-300">"PHP"</span>, <span className="text-emerald-300">"Laravel"</span>],</p>
-              <p><span className="text-teal-400">"mobile"</span>: [<span className="text-emerald-300">"Flutter"</span>, <span className="text-emerald-300">"Dart SDK"</span>],</p>
-              <p><span className="text-teal-400">"database"</span>: [<span className="text-emerald-300">"SQLite"</span>, <span className="text-emerald-300">"SQL"</span>, <span className="text-emerald-300">"SQLAlchemy"</span>],</p>
-              <p><span className="text-teal-400">"tools"</span>: [<span className="text-emerald-300">"Git"</span>, <span className="text-emerald-300">"GitHub"</span>, <span className="text-emerald-300">"VS Code"</span>, <span className="text-emerald-300">"AI Tools"</span>]</p>
+              <p><span className="text-teal-400">"languages"</span>: [<span className="text-emerald-300">"Python"</span>, <span className="text-emerald-300">"Dart"</span>, <span className="text-emerald-300">"TypeScript"</span>, <span className="text-emerald-300">"C/C++"</span>],</p>
+              <p><span className="text-teal-400">"web_mobile"</span>: [<span className="text-emerald-300">"React"</span>, <span className="text-emerald-300">"Flutter"</span>, <span className="text-emerald-300">"Laravel"</span>, <span className="text-emerald-300">"Tailwind"</span>],</p>
+              <p><span className="text-teal-400">"cloud_db"</span>: [<span className="text-emerald-300">"Supabase"</span>, <span className="text-emerald-300">"Pinecone Vector DB"</span>, <span className="text-emerald-300">"SQLite"</span>],</p>
+              <p><span className="text-teal-400">"auth_infra"</span>: [<span className="text-emerald-300">"Clerk"</span>, <span className="text-emerald-300">"Sentry"</span>, <span className="text-emerald-300">"AI Tools"</span>]</p>
             </div>
             <div className="text-slate-400 font-mono text-[11px]">{'};'}</div>
           </div>
@@ -202,42 +211,17 @@ export const InteractiveTerminal: React.FC = () => {
 
             {/* Quick Action Pills */}
             <div className="pt-2 flex flex-wrap gap-1.5">
-              <button
-                onClick={() => handleCommand('help')}
-                className="px-2 py-1 text-[11px] bg-slate-900 hover:bg-slate-800 text-slate-300 rounded border border-slate-800 transition-colors"
-              >
-                help
-              </button>
-              <button
-                onClick={() => handleCommand('bio')}
-                className="px-2 py-1 text-[11px] bg-slate-900 hover:bg-slate-800 text-slate-300 rounded border border-slate-800 transition-colors"
-              >
-                bio
-              </button>
-              <button
-                onClick={() => handleCommand('stack')}
-                className="px-2 py-1 text-[11px] bg-slate-900 hover:bg-slate-800 text-slate-300 rounded border border-slate-800 transition-colors"
-              >
-                stack
-              </button>
-              <button
-                onClick={() => handleCommand('projects')}
-                className="px-2 py-1 text-[11px] bg-slate-900 hover:bg-slate-800 text-slate-300 rounded border border-slate-800 transition-colors"
-              >
-                projects
-              </button>
-              <button
-                onClick={() => handleCommand('contact')}
-                className="px-2 py-1 text-[11px] bg-slate-900 hover:bg-slate-800 text-slate-300 rounded border border-slate-800 transition-colors"
-              >
-                contact
-              </button>
-              <button
-                onClick={() => handleCommand('clear')}
-                className="px-2 py-1 text-[11px] bg-slate-900 hover:bg-slate-800 text-rose-400/80 rounded border border-slate-800 transition-colors"
-              >
-                clear
-              </button>
+              {['help', 'bio', 'stack', 'projects', 'contact', 'clear'].map((cmd) => (
+                <button
+                  key={cmd}
+                  onClick={() => handleCommand(cmd)}
+                  className={`px-2 py-1 text-[11px] bg-slate-900 hover:bg-slate-800 text-slate-300 rounded border border-slate-800 transition-colors ${
+                    cmd === 'clear' ? 'text-rose-400 hover:text-rose-300' : ''
+                  }`}
+                >
+                  {cmd}
+                </button>
+              ))}
             </div>
 
             {/* CLI Input */}
@@ -253,7 +237,7 @@ export const InteractiveTerminal: React.FC = () => {
                 type="text"
                 value={inputVal}
                 onChange={(e) => setInputVal(e.target.value)}
-                placeholder="Komut girin..."
+                placeholder={lang === 'tr' ? 'Komut girin...' : 'Type a command...'}
                 className="flex-1 bg-transparent text-xs text-slate-100 placeholder-slate-600 focus:outline-none font-mono"
               />
               <button type="submit" className="text-emerald-400 hover:text-emerald-300">

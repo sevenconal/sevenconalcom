@@ -44,21 +44,15 @@ export const SKILL_CATEGORIES: SkillCategory[] = [
         tag: 'Arayüz Standartları'
       },
       {
-        name: 'JavaScript',
+        name: 'JavaScript & TS',
         level: 'İyi',
-        description: 'DOM manipülasyonu, ES6+ standartları, asenkron işlemler (Promises/Fetch).',
+        description: 'DOM manipülasyonu, ES6+ standartları, tip güvenli TypeScript mimarisi.',
         tag: 'Dinamik Mantık'
       },
       {
-        name: 'PHP',
+        name: 'PHP & Laravel',
         level: 'Orta',
-        description: 'Sunucu taraflı kodlama, form işleme ve dinamik sayfa oluşturma.',
-        tag: 'Backend Mantığı'
-      },
-      {
-        name: 'Laravel',
-        level: 'Orta',
-        description: 'MVC mimarisi, Eloquent ORM, RESTful API uç noktaları ve routing yapısı.',
+        description: 'MVC mimarisi, Eloquent ORM, RESTful API uç noktaları ve sunucu mantığı.',
         tag: 'Web Framework'
       }
     ]
@@ -84,51 +78,51 @@ export const SKILL_CATEGORIES: SkillCategory[] = [
   },
   {
     id: 'database',
-    title: 'Veritabanı & ORM',
+    title: 'Veritabanı & Bulut',
     iconName: 'Database',
     skills: [
       {
-        name: 'SQLite',
+        name: 'Supabase',
         level: 'İyi',
-        description: 'Yerel cihaz veritabanı depolama, mobil & masaüstü gömülü veritabanı işlemleri.',
-        tag: 'Gömülü Depolama'
+        description: 'PostgreSQL tabanlı gerçek zamanlı veritabanı, Row Level Security ve BaaS mimarisi.',
+        tag: 'Modern Backend'
       },
       {
-        name: 'SQL (Relational DB)',
-        level: 'Orta',
-        description: 'İlişkisel veritabanı tasarımı, sorgu oluşturma, tablolama ve normalizasyon.',
-        tag: 'İlişkisel Mimari'
+        name: 'Pinecone',
+        level: 'Pratik Uygulamalı',
+        description: 'Yapay zeka ve LLM uygulamaları için vektör veritabanı (Vector DB) indeksleme.',
+        tag: 'Vector DB & AI'
       },
       {
-        name: 'SQLAlchemy',
-        level: 'Orta',
-        description: 'Python uygulamalarında nesne-ilişkisel eşleme (ORM) ve veritabanı yönetimi.',
-        tag: 'Python ORM'
+        name: 'SQLite & SQL',
+        level: 'İyi',
+        description: 'İlişkisel veritabanı tasarımı, gömülü depolama ve SQLAlchemy ORM.',
+        tag: 'İlişkisel Depolama'
       }
     ]
   },
   {
     id: 'tools',
-    title: 'Araçlar & Metodoloji',
+    title: 'Altyapı, Auth & Araçlar',
     iconName: 'Wrench',
     skills: [
       {
-        name: 'Git & GitHub',
+        name: 'Clerk Auth',
         level: 'İyi',
-        description: 'Sürüm kontrolü, dal yönetimi (branching) ve düzenli projelendirme.',
-        tag: 'Versiyon Kontrol'
+        description: 'Modern kullanıcı kimlik doğrulama, oturum yönetimi ve OAuth entegrasyonu.',
+        tag: 'Authentication'
       },
       {
-        name: 'VS Code',
-        level: 'İyi',
-        description: 'Özelleştirilmiş geliştirme ortamı, debugging ve hızlı proje navigasyonu.',
-        tag: 'IDE Environment'
+        name: 'Sentry',
+        level: 'Orta',
+        description: 'Gerçek zamanlı performans izleme, hata takibi (error tracking) ve log analizi.',
+        tag: 'Monitoring'
       },
       {
-        name: 'AI-Assisted Tools',
-        level: 'Pratik Uygulamalı',
-        description: 'Geliştirme hızını artıran yapay zeka araçları, kod optimizasyonu ve refactoring desteği.',
-        tag: 'Modern Verimlilik'
+        name: 'Git & AI Tools',
+        level: 'İyi',
+        description: 'GitHub versiyon kontrolü, VS Code ve verimlilik artıran yapay zeka araçları.',
+        tag: 'Developer Flow'
       }
     ]
   }
